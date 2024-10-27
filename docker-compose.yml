@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  dockercomposetesting.web:
+    image: ${DOCKER_REGISTRY-}dockercomposetestingweb
+    build:
+      context: .
+      dockerfile: DockerComposeTesting.Web/Dockerfile
+    ports:
+      - 8080:8080
+      - 8081:8081
+    depends_on:
+      - postgreSql
+
+  postgreSql:
+    image: postgres:16
+    container_name: postgreSql
+    restart: always
+    volumes:
+     - ./docker/postgreSql/:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: adminHub
+      POSTGRES_PASSWORD: passwordHub
+      POSTGRES_DB: HubDb
+    ports:
+     - 5432:5432
