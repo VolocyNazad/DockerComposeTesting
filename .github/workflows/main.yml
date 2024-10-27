@@ -22,15 +22,15 @@ jobs:
         dotnet-version: 8.0.x
         
     - name: Restore dependencies
-      run: dotnet restore './DockerComposeTesting.Web.csproj'
+      run: dotnet restore './DockerComposeTesting.Web/DockerComposeTesting.Web.csproj'
     - name: Build
-      run: dotnet build './DockerComposeTesting.Web.csproj'
+      run: dotnet build './DockerComposeTesting.Web/DockerComposeTesting.Web.csproj'
       
     - name: Restore test dependencies
-      run: dotnet restore './DockerComposeTesting.Tests.csproj'
+      run: dotnet restore './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj'
     - name: Build
-      run: dotnet build './DockerComposeTesting.Tests.csproj'
+      run: dotnet build './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj'
     - name: Test
-      run: dotnet test './DockerComposeTesting.Tests.csproj' --no-build --verbosity normal
+      run: dotnet test './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj' --no-build --verbosity normal
       
     - run: echo "🐱‍👤This job's status is ${{ job.status }}." 
