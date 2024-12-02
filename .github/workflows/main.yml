@@ -1,64 +1,65 @@
 name: .NET
-
 on:
-	push:
-		branches: [ "master" ]
-	pull_request:
-    branches: [ "master" ]
+  push:
+    branches: 
+      - 'master' 
+  pull_request:
+    branches: 
+      - 'master' 
 
 jobs:
-	run_tests:
-		runs-on: ubuntu-latest
-		steps:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
 
-			- name: Get repository code
-				uses: actions/checkout@v4
-			
+      - name: Get repository code
+        uses: actions/checkout@v4
+
       - name: Setup .NET
-				uses: actions/setup-dotnet@v4
-				with:
-					dotnet-version: 8.0.x
-				
-			- name: Restore test dependencies
-				run: dotnet restore './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj'
-			
-			- name: Build
-				run: dotnet build './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj'
-			
-			- name: Run tests
-				run: dotnet test './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj' --no-build --verbosity normal
-		
-	build:
-		runs-on: ubuntu-latest
-		needs: run_tests
-		steps:
-	
-			- name: Get repository code
-				uses: actions/checkout@v4
-			
-			- name: Setup .NET
-				uses: actions/setup-dotnet@v4
-				with:
-				dotnet-version: 8.0.x
-				
-			- name: Restore dependencies
-				run: dotnet restore './DockerComposeTesting.Web/DockerComposeTesting.Web.csproj'
-			
-			- name: Build
-				run: dotnet build './DockerComposeTesting.Web/DockerComposeTesting.Web.csproj' 
-		
-			- name: Upload artifacts
-				uses: actions/upload-artifact@v4
-				with: 
-				  name: api
-				  path: DockerComposeTesting.Web/bin/Release
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore test dependencies
+        run: dotnet restore './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj'
+
+      - name: Build
+        run: dotnet build './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj'
+
+      - name: Run tests
+        run: dotnet test './DockerComposeTesting.Tests/DockerComposeTesting.Tests.csproj' --no-build --verbosity normal
+
+  build:
+    runs-on: ubuntu-latest
+    needs: run_tests
+    steps:
+  
+      - name: Get repository code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore './DockerComposeTesting.Web/DockerComposeTesting.Web.csproj'
+
+      - name: Build
+        run: dotnet build './DockerComposeTesting.Web/DockerComposeTesting.Web.csproj' 
+  
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with: 
+          name: api
+          path: DockerComposeTesting.Web/bin/Release
       
-	deploy:
-		runs-on: ubuntu-latest
-		needs: build
-		steps:
-		
-			- name: Download artifacts
-			  uses: actions/download-artifact@v4
-			  with: 
-				  name: api
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with: 
+          name: api
